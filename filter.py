@@ -15,18 +15,18 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scopes))
 top_tracks = sp.current_user_top_tracks(time_range='long_term')
 
 songs = []
+song_names = []
 
 for idx, item in enumerate(top_tracks['items']):
 
     uri = item['uri']
     valence = sp.audio_features(uri)[0]['valence']
     
-    print(idx, valence, item['uri'], item['name'], [a['name'] for a in item['artists']])
-    #track = item['track']
-    # print(idx, track['artists'][0]['name'], " – ", track['name'])
+    # print(idx, valence, item['uri'], item['name'], [a['name'] for a in item['artists']])
 
     if min_valence <= valence and valence <= max_valence:
         songs.append(uri)
+        song_names.append(item['name'])
 
 
 new_playlist = sp.user_playlist_create(
@@ -35,5 +35,7 @@ new_playlist = sp.user_playlist_create(
     public=False,
     description=f"valence lower bound (min happiness) = {min_valence}, valence upper bound (max happiness) = {max_valence}"
 )
+
+print('Creating playlist with songs' + song_names)
 
 sp.playlist_add_items(new_playlist['id'], songs)

@@ -36,6 +36,6 @@ new_playlist = sp.user_playlist_create(
     description=f"valence lower bound (min happiness) = {min_valence}, valence upper bound (max happiness) = {max_valence}"
 )
 
-print('Creating playlist with songs' + song_names)
+print('Creating playlist with songs: ' + str(song_names))
 
 sp.playlist_add_items(new_playlist['id'], songs)
